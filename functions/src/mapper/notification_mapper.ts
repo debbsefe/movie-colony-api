@@ -25,6 +25,9 @@ export class NotificationMapper implements IMapper<Notification> {
 }
 
 export class ResultMapper implements IMapper2<Array<Result>> {
+  toMap(item: Array<Result>): FirebaseFirestore.DocumentData {
+    throw new Error("Method not implemented.");
+  }
   fromSnapshot(snapshot: Array<any>): Array<Result> | undefined {
     if (snapshot === null || snapshot === undefined) return undefined;
     const data = snapshot;
@@ -37,13 +40,5 @@ export class ResultMapper implements IMapper2<Array<Result>> {
           fcm: val[Result.FCM],
         } as Result)
     );
-  }
-
-  toMap(item: Result): any {
-    return {
-      [Result.TV_ID]: item.tvId,
-      [Result.TV_NAME]: item.tvName,
-      [Result.FCM]: item.fcm,
-    };
   }
 }

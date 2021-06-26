@@ -11,5 +11,5 @@ export interface IMapper<T extends DBModel> {
 
 export interface IMapper2<T> {
   fromSnapshot(snapshot: any): T | undefined;
-  toMap(item: T): any;
+  toMap(item: T): DocumentData;
 }
