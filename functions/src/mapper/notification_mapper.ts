@@ -1,7 +1,9 @@
-import { IMapper } from "../interfaces/mapper";
-import { Notification } from "../models/notification_model";
+import { IMapper, IMapper2 } from "../interfaces/mapper";
+import { Notification, Result } from "../models/notification_model";
 
 export class NotificationMapper implements IMapper<Notification> {
+  mapper = new ResultMapper();
+
   fromSnapshot(
     snapshot: FirebaseFirestore.DocumentSnapshot
   ): Notification | undefined {
@@ -11,19 +13,37 @@ export class NotificationMapper implements IMapper<Notification> {
 
     return new Notification({
       ref: snapshot.ref,
-      notification: data[Notification.NOTIFICATION_FIELD],
-      tvId: data[Notification.TV_ID],
-      tvName: data[Notification.TV_NAME],
-      fcm: data[Notification.FCM],
+      result: this.mapper.fromSnapshot(data[Notification.RESULT_FIELD]),
     });
   }
 
   toMap(item: Notification): FirebaseFirestore.DocumentData {
     return {
-      [Notification.NOTIFICATION_FIELD]: item.notification,
-      [Notification.TV_ID]: item.tvId,
-      [Notification.TV_NAME]: item.tvName,
-      [Notification.FCM]: item.fcm,
+      [Notification.RESULT_FIELD]: item.result,
+    };
+  }
+}
+
+export class ResultMapper implements IMapper2<Array<Result>> {
+  fromSnapshot(snapshot: Array<any>): Array<Result> | undefined {
+    if (snapshot === null || snapshot === undefined) return undefined;
+    const data = snapshot;
+    if (data === null || data === undefined) return undefined;
+    return data.map(
+      (val) =>
+        ({
+          tvId: val[Result.TV_ID],
+          tvName: val[Result.TV_NAME],
+          fcm: val[Result.FCM],
+        } as Result)
+    );
+  }
+
+  toMap(item: Result): any {
+    return {
+      [Result.TV_ID]: item.tvId,
+      [Result.TV_NAME]: item.tvName,
+      [Result.FCM]: item.fcm,
     };
   }
 }

@@ -8,3 +8,8 @@ export interface IMapper<T extends DBModel> {
   fromSnapshot(snapshot: DocumentSnapshot): T | undefined;
   toMap(item: T): DocumentData;
 }
+
+export interface IMapper2<T> {
+  fromSnapshot(snapshot: any): T | undefined;
+  toMap(item: T): any;
+}

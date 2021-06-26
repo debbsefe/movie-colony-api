@@ -22,6 +22,6 @@ export class SendNotification extends AbstractMethods {
   }
 
   async processNotification(notification: Notification): Promise<any> {
-    //const tokens = notification.map((snap) => snap.id);
+    const tokens = notification.result?.map((snap) => snap.fcm);
   }
 }
