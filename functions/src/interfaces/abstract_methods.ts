@@ -29,7 +29,7 @@ export abstract class AbstractMethods {
     throw new Error("onCall not implemented yet!!");
   }
 
-  async onRequest(req: Request, res: Response): Promise<any> {
+  async onRequest(req: any, resp: Response): Promise<any> {
     throw new Error("onRequest not implemented yet!!");
   }
 }
