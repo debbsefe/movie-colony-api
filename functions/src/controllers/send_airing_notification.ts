@@ -1,23 +1,9 @@
-import { EventContext } from "firebase-functions";
 import { admin, fcm } from "../config/firebase";
-import { AbstractMethods } from "../interfaces/abstract_methods";
 import { NotificationModel } from "../models/notification_model";
 
-export class SendAiringNotification extends AbstractMethods {
-  async onCreate(
-    snap: FirebaseFirestore.DocumentSnapshot,
-    context: EventContext
-  ): Promise<any> {
-    const notification = snap as NotificationModel;
-    if (notification === null || notification === undefined) {
-      console.log("Console log");
-      return;
-    }
-    await this.processNotification(notification);
-    console.log("All Done!");
-  }
-
+export class SendAiringNotification {
   async processNotification(notification: NotificationModel): Promise<any> {
+    console.log(notification.results);
     notification.results?.forEach((element) => {
       const payload: admin.messaging.MessagingPayload = {
         notification: {

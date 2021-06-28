@@ -1,7 +1,10 @@
 import * as admin from "firebase-admin";
 import { Strings } from "../utils/strings";
 
-admin.initializeApp();
+var serviceAccount = require("../../../service-account-file.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
 const db = admin.firestore();
 const fcm = admin.messaging();

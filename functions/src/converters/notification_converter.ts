@@ -3,7 +3,7 @@ import { NotificationModel } from "../models/notification_model";
 export const notificationConverter = {
   toFirestore(notification: NotificationModel): FirebaseFirestore.DocumentData {
     return {
-      result: notification.results,
+      results: notification.results,
     };
   },
   fromFirestore(

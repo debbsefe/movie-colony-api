@@ -1,11 +1,11 @@
-import { ResultsDB } from "../database/results_database";
+import { ResultsDB } from "../databases/results_database";
 import { Results } from "../models/notification_model";
 
 export class FetchNotificationList {
-  mapper = new ResultsDB();
+  resultsDb = new ResultsDB();
 
   async fetchList(): Promise<Results[] | undefined> {
-    const ref = await this.mapper.getNotificationList();
+    const ref = await this.resultsDb.get();
     return ref;
   }
 }

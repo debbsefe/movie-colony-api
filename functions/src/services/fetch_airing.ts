@@ -1,16 +1,27 @@
 import axios, { AxiosResponse } from "axios";
-import { TokenDB } from "../database/token_database";
+import { TokenDB } from "../databases/token_database";
 import { NotificationModel, Results } from "../models/notification_model";
-import { FetchNotificationList } from "./fetch_notification_list";
 
 export class FetchAiring {
+  /**
+   * result initialized to an empty array
+   */
   results: Results[] = [];
+
+  /**
+   * add data to results array
+   */
   populateData = (data: Results[]) => this.results.push(...data);
   tokenDb = new TokenDB();
-  notification = new FetchNotificationList();
 
-  async airing(): Promise<Results[] | undefined> {
-    const token: string | undefined = await this.tokenDb.getFromRef();
+  /**
+   * @returns an array of results that includes tv shows that are airing today
+   */
+  async airing(): Promise<Results[]> {
+    /**
+     * api token fetched from firestore db
+     */
+    const token: string | undefined = await this.tokenDb.get();
 
     const url: string = `https://api.themoviedb.org/3/tv/airing_today?api_key=${token}`;
 
@@ -20,20 +31,18 @@ export class FetchAiring {
       const totalPages: number | undefined = model.total_pages;
       this.populateData(model.results!);
 
-      await this.showingToday(totalPages!, url);
-      const notificationList = await this.notification.fetchList();
-      const filteredArray = notificationList!.filter((o) =>
-        this.results!.some(({ id }) => o.id === id)
-      );
-
-      console.log(filteredArray);
-      return filteredArray;
+      await this.airingLoop(totalPages!, url);
+      return this.results;
     } catch (err) {
       console.log("Error: ", err.message);
+      throw err;
     }
   }
 
-  async showingToday(totalPages: number, url: string) {
+  /**
+   * for loop through the results returned from the api and save to list, loop is based on total number of pages
+   */
+  async airingLoop(totalPages: number, url: string): Promise<void> {
     try {
       for (let index = 1; index < totalPages; index++) {
         const page = index + 1;

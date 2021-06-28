@@ -1,13 +1,13 @@
 import { Strings } from "../utils/strings";
 import { db } from "../config/firebase";
 import { Results, NotificationModel } from "../models/notification_model";
-import { resultsConverter } from "../converter/results_converter";
-import { notificationConverter } from "../converter/notification_converter";
+import { resultsConverter } from "../converters/results_converter";
+import { notificationConverter } from "../converters/notification_converter";
 
 export class ResultsDB {
-  async getNotificationList(): Promise<Results[] | undefined> {
+  async get(): Promise<Results[] | undefined> {
     const snap = await db
-      .collection(Strings.NOTIFICATION_LIST_COL_REF)
+      .collectionGroup("tv")
       .withConverter(resultsConverter)
       .get();
 

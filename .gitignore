@@ -64,3 +64,9 @@ node_modules/
 
 # dotenv environment variables file
 .env
+
+#firebase admin service account
+service-account-file.json
+
+# $env:GOOGLE_APPLICATION_CREDENTIALS="C:\projects\movie_colony\service-account-file.json"
+
