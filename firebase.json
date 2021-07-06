@@ -1,7 +1,7 @@
 {
   "firestore": {
     "rules": "firestore.rules",
-    "indexes": "y"
+    "indexes": "firestore.indexes.json"
   },
   "functions": {
     "predeploy": [
@@ -9,5 +9,22 @@
       "npm --prefix \"$RESOURCE_DIR\" run build"
     ],
     "source": "functions"
+  },
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "functions": {
+      "port": 5001
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "pubsub": {
+      "port": 8085
+    },
+    "ui": {
+      "enabled": true
+    }
   }
 }
